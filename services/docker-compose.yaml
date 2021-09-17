@@ -107,7 +107,3 @@ services:
       - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/opt/zeppelin/lib/spark-jobs.jar
     links:
       - lakefs:s3.docker.lakefs.io
-# org.apache.hadoop:hadoop-aws:3.2.0
-
-
-# docker-compose down --rmi all --volumes

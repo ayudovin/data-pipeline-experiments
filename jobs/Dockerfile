@@ -28,5 +28,3 @@ ENV HADOOP_COMMON_LIB_NATIVE_DIR $HADOOP_HOME/lib/native
 ENV HADOOP_OPTS "-Djava.library.path=$HADOOP_HOME/lib"
 
 COPY  target/scala-2.12/jobs-assembly-2.0.jar /
-
-#docker run --network=lakefs --link lakefs:s3.docker.lakefs.io --rm -p 4041:4040  -v /Users/yudovin/workspace/profitero/data-pipeline-experiments/data:/data jobs /spark/bin/spark-submit --class "com.data.pipeline.BsrPreparation"  /jobs-assembly-2.0.jar
