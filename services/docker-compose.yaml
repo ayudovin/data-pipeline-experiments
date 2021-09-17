@@ -89,7 +89,6 @@ services:
       - "4041:4040"
     links:
       - lakefs:s3.docker.lakefs.io
-
   zeppelin:
     image: zeppelin-spark-3
     container_name: zeppelin
