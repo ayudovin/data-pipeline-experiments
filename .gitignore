@@ -7,5 +7,6 @@
 /data/minio/*
 /data/postgres/*
 /data-pipeline-experiments.iml
-/jobs/project/
+/jobs/project/project
+/jobs/project/target
 /jobs/.bsp/
