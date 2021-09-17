@@ -1,0 +1,113 @@
+version: "3"
+networks:
+  lakefs-network:
+    name: lakefs
+
+services:
+  postgres:
+    image: postgres:11
+    container_name: postgres
+    volumes:
+      - ../data/postgres:/var/lib/postgresql
+      - ../data/postgres/data:/var/lib/postgresql/data
+    networks:
+      - lakefs-network
+    environment:
+      POSTGRES_USER: lakefs
+      POSTGRES_PASSWORD: lakefs
+
+
+  lakefs-setup:
+    # Will setup a default user ("docker") with access credentials: "AKIAIOSFODNN7EXAMPLE", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    image: treeverse/lakefs:latest
+    container_name: lakefs-setup
+    networks:
+      - lakefs-network
+    depends_on:
+      - postgres
+    environment:
+      - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=some random secret string
+      - LAKEFS_DATABASE_CONNECTION_STRING=postgres://lakefs:lakefs@postgres/postgres?sslmode=disable
+    entrypoint: ["/app/wait-for", "postgres:5432", "--", "sh", "-c",
+                 "lakefs setup --user-name docker --access-key-id AKIAIOSFODNN7EXAMPLE --secret-access-key wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"]
+  lakefs:
+    image: treeverse/lakefs:latest
+    container_name: lakefs
+    networks:
+      - lakefs-network
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - LAKEFS_BLOCKSTORE_TYPE=s3
+      - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=some random secret string
+      - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID=minio  # USED BY LAKEFS TO ACCESS S3
+      - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_SECRET_ACCESS_KEY=minio123 # USED BY LAKEFS TO ACCESS S3
+      - LAKEFS_DATABASE_CONNECTION_STRING=postgres://lakefs:lakefs@postgres/postgres?sslmode=disable
+      - LAKEFS_GATEWAYS_S3_DOMAIN_NAME=s3.docker.lakefs.io
+      - LAKEFS_BLOCKSTORE_S3_ENDPOINT=http://minio:9000
+      - LAKEFS_LOGGING_LEVEL
+      - LAKEFS_STATS_ENABLED
+      - LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE=true
+    entrypoint: ["/app/wait-for", "postgres:5432", "--", "/app/lakefs", "run"]
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    networks:
+      - lakefs-network
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    hostname: minio
+    volumes:
+      - ../data/minio:/data
+  airflow:
+    image: airflow
+    container_name: airflow
+    command: bash -c "airflow db init && airflow users create --username admin --password admin --role Admin --firstname Artsiom --lastname Yudovin --email admin@example.org && airflow webserver -D && airflow scheduler -D"
+    networks:
+      - lakefs-network
+    environment:
+      SPARK_HOME: spark
+    volumes:
+      - ./airflow/dags/experiments:/opt/airflow/dags
+      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/spark-job
+      - ../data:/data
+    ports:
+      - "8081:8080"
+      - "4041:4040"
+    links:
+      - lakefs:s3.docker.lakefs.io
+
+  zeppelin:
+    image: zeppelin-spark-3
+    container_name: zeppelin
+    networks:
+      - lakefs-network
+    ports:
+      - "8080:8080"
+      - "4040:4040"
+    environment:
+      SPARK_HOME: spark
+      SPARK_SUBMIT_OPTIONS: "--jars /opt/zeppelin/lib/spark-jobs.jar"
+    volumes:
+      - ./zeppelin/notebooks:/opt/zeppelin/notebook
+      - ../data:/data
+      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/opt/zeppelin/lib/spark-jobs.jar
+    links:
+      - lakefs:s3.docker.lakefs.io
+# org.apache.hadoop:hadoop-aws:3.2.0
+
+
+# docker-compose down --rmi all --volumes
