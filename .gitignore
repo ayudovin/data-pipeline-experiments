@@ -6,6 +6,5 @@
 /data/source/
 /data/minio/*
 /data/postgres/*
-/data-pipeline-experiments.iml
 /jobs/project/
 /jobs/.bsp/
