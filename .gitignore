@@ -1,0 +1,9 @@
+/.idea/
+/jobs/.idea/
+/jobs/target/
+/services/airflow/dags/.idea/
+/services/airflow/dags/venv/
+/data/source/
+/data/minio/*
+/data/postgres/*
+/data-pipeline-experiments.iml
