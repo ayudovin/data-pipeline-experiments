@@ -27,7 +27,7 @@ with DAG(
     application = f"/jobs/jobs-assembly-{version}.jar"
 
     bsr_preparation = SparkSubmitOperator(application=application,
-                                          java_class="com.data.pipeline.RankPreparation", task_id="bsr_preparation",
+                                          java_class="com.data.pipeline.RankPreparation", task_id="rank_preparation",
                                           spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                           driver_memory="4g")
 
