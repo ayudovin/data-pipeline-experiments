@@ -95,7 +95,7 @@ services:
       SPARK_HOME: spark
     volumes:
       - ./airflow/dags/experiments:/opt/airflow/dags
-      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/spark-job.jar
+      - ../jobs/target/scala-2.12/:/jobs
       - ../data:/data
     ports:
       - "8081:8080"
@@ -117,6 +117,6 @@ services:
     volumes:
       - ./zeppelin/notebooks:/opt/zeppelin/notebook
       - ../data:/data
-      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/opt/zeppelin/lib/spark-jobs.jar
+      - ../jobs/target/scala-2.12/jobs-assembly-0.0.jar:/opt/zeppelin/lib/spark-jobs.jar
     links:
       - lakefs:s3.docker.lakefs.io
