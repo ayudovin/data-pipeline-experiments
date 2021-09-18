@@ -15,7 +15,6 @@ services:
       POSTGRES_USER: lakefs
       POSTGRES_PASSWORD: lakefs
 
-
   lakefs-setup:
     # Will setup a default user ("docker") with access credentials: "AKIAIOSFODNN7EXAMPLE", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
     image: treeverse/lakefs:latest
@@ -51,6 +50,12 @@ services:
       - LAKEFS_STATS_ENABLED
       - LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE=true
     entrypoint: ["/app/wait-for", "postgres:5432", "--", "/app/lakefs", "run"]
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 5s
 
   minio:
     image: minio/minio
@@ -72,6 +77,7 @@ services:
     hostname: minio
     volumes:
       - ../data/minio:/data
+
   airflow:
     image: airflow
     container_name: airflow
@@ -89,6 +95,7 @@ services:
       - "4041:4040"
     links:
       - lakefs:s3.docker.lakefs.io
+
   zeppelin:
     image: zeppelin-spark-3
     container_name: zeppelin
