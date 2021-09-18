@@ -82,7 +82,7 @@ services:
       SPARK_HOME: spark
     volumes:
       - ./airflow/dags/experiments:/opt/airflow/dags
-      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/spark-job
+      - ../jobs/target/scala-2.12/jobs-assembly-1.0.jar:/spark-job.jar
       - ../data:/data
     ports:
       - "8081:8080"

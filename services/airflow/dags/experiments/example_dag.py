@@ -22,42 +22,42 @@ with DAG(
 ) as dag:
 
     branch = Variable.get("branch")
-    bsr_preparation = SparkSubmitOperator(application="spark-job",
+    bsr_preparation = SparkSubmitOperator(application="spark-job.jar",
                                           java_class="com.data.pipeline.RankPreparation", task_id="bsr_preparation",
                                           spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                           driver_memory="4g")
 
-    units_preparation = SparkSubmitOperator(application="spark-job",
+    units_preparation = SparkSubmitOperator(application="spark-job.jar",
                                             java_class="com.data.pipeline.UnitsPreparation",
                                             task_id="units_preparation",
                                             spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                             driver_memory="4g")
 
-    rank_unit_accord = SparkSubmitOperator(application="spark-job",
+    rank_unit_accord = SparkSubmitOperator(application="spark-job.jar",
                                            java_class="com.data.pipeline.RankUnitAccord",
                                            task_id="rank_units_accord",
                                            spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                            driver_memory="4g")
 
-    split = SparkSubmitOperator(application="spark-job",
+    split = SparkSubmitOperator(application="spark-job.jar",
                                 java_class="com.data.pipeline.Split",
                                 task_id="split",
                                 spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                 driver_memory="4g")
 
-    estimation_method = SparkSubmitOperator(application="spark-job",
+    estimation_method = SparkSubmitOperator(application="spark-job.jar",
                                             java_class="com.data.pipeline.EstimationMethod",
                                             task_id="estimation_method",
                                             spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                             driver_memory="4g")
 
-    accuracy = SparkSubmitOperator(application="spark-job",
+    accuracy = SparkSubmitOperator(application="spark-job.jar",
                                    java_class="com.data.pipeline.Accuracy",
                                    task_id="accuracy",
                                    spark_binary="/spark/bin/spark-submit", application_args=[branch],
                                    driver_memory="4g")
 
-    sold_units = SparkSubmitOperator(application="spark-job",
+    sold_units = SparkSubmitOperator(application="spark-job.jar",
                                      java_class="com.data.pipeline.ApplySoldUnits",
                                      task_id="sold_units",
                                      spark_binary="/spark/bin/spark-submit", application_args=[branch],
