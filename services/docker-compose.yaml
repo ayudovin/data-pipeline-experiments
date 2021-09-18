@@ -28,6 +28,13 @@ services:
       - LAKEFS_DATABASE_CONNECTION_STRING=postgres://lakefs:lakefs@postgres/postgres?sslmode=disable
     entrypoint: ["/app/wait-for", "postgres:5432", "--", "sh", "-c",
                  "lakefs setup --user-name docker --access-key-id AKIAIOSFODNN7EXAMPLE --secret-access-key wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"]
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 5s
+
   lakefs:
     image: treeverse/lakefs:latest
     container_name: lakefs
