@@ -8,7 +8,6 @@ services:
     image: postgres:11
     container_name: postgres
     volumes:
-      - ../data/postgres:/var/lib/postgresql
       - ../data/postgres/data:/var/lib/postgresql/data
     networks:
       - lakefs-network
@@ -38,6 +37,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
+      - lakefs-setup
       - postgres
     environment:
       - LAKEFS_BLOCKSTORE_TYPE=s3
