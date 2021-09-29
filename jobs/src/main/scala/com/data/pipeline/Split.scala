@@ -10,6 +10,11 @@ object Split {
   }
 }
 
+/**
+ * Split data set on training and validation.
+ *
+ * @param branch from lakefs.
+ */
 class Split(branch: String) extends PipelinePoint[(DataFrame, DataFrame)] {
   override def write(): Unit = {
     val (trainSet, validationSet) = this.transform()

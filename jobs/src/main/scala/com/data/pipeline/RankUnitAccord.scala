@@ -10,6 +10,11 @@ object RankUnitAccord {
   }
 }
 
+/**
+ * Connect rank with units by uid (uniq identification).
+ *
+ * @param branch from lakefs.
+ */
 class RankUnitAccord(branch: String) extends PipelinePoint[DataFrame] {
   override def write(): Unit = {
     val result = this.transform()

@@ -13,6 +13,11 @@ object Accuracy {
   }
 }
 
+/**
+ * Calcaulate accuracy (MAE) for our methodology.
+ *
+ * @param branch from lakefs
+ */
 class Accuracy(branch: String) extends PipelinePoint[(DataFrame, DataFrame)] {
 
   import spark.implicits._

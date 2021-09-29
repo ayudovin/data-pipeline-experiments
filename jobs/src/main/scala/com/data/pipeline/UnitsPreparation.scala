@@ -11,6 +11,12 @@ object UnitsPreparation {
   }
 }
 
+/**
+ * Prepare units for further estimations.
+ *
+ * @param bsrPath to rank source.
+ * @param branch from lakefs.
+ */
 class UnitsPreparation(salesPath: String, branch: String) extends PipelinePoint[DataFrame] {
 
   import spark.implicits._

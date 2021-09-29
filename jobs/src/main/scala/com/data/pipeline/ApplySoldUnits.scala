@@ -10,6 +10,12 @@ object ApplySoldUnits {
     soldUnits.write()
   }
 }
+
+/**
+ * Estimate sold units for ranks.
+ *
+ * @param branch from lakefs
+ */
 class ApplySoldUnits(branch: String) extends PipelinePoint[DataFrame] {
   import spark.implicits._
 

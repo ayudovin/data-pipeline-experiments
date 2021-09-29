@@ -1,7 +1,12 @@
 package com.data.pipeline
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
+/**
+ * Main trait for initilizing each pipeline point.
+ *
+ * @tparam T
+ */
 trait PipelinePoint[T] {
   val spark: SparkSession =  SparkSession.builder()
     .appName("experiments")

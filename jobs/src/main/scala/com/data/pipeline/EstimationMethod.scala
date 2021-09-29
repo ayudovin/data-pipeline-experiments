@@ -12,6 +12,12 @@ object EstimationMethod {
     model.write()
   }
 }
+
+/**
+ * Prepare estimation methodology to detect the number of units by rank.
+ *
+ * @param branch from lakefs
+ */
 class EstimationMethod(val branch: String) extends PipelinePoint[MLWritable] {
   override def write(): Unit = {
     val model = this.transform()

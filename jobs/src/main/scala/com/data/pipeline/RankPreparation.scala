@@ -11,6 +11,12 @@ object RankPreparation {
   }
 }
 
+/**
+ * Prepare rank for further estimations.
+ *
+ * @param bsrPath to rank source.
+ * @param branch from lakefs/
+ */
 class RankPreparation(bsrPath: String, branch: String) extends PipelinePoint[DataFrame] {
 
   import spark.implicits._
