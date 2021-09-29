@@ -3,9 +3,7 @@ package com.data.pipeline
 import org.apache.spark.sql.SparkSession
 
 /**
- * Main trait for initilizing each pipeline point.
- *
- * @tparam T
+ * Main trait for init each pipeline point.
  */
 trait PipelinePoint[T] {
   val spark: SparkSession =  SparkSession.builder()
