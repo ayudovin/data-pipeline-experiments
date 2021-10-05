@@ -6,12 +6,13 @@ The experiment is a change in methodology and obtaining final results based on t
 
 ## Installation
 
+ - Install SBT.
  - Open the project in IntelliJ IDEA or something similar.
  - Setup SDK for Java and Scala.
  - Import jobs directory as SBT module.
  - Go to ./service/zeppelin and execute:
    ```bash
-    docker build . -t zeppelin
+    docker build . -t zeppelin-spark-3
    ```
  - Go to ./service/airflow and execute:
    ```bash
