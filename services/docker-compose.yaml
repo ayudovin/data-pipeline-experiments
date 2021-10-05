@@ -17,7 +17,7 @@ services:
 
   lakefs-setup:
     # Will setup a default user ("docker") with access credentials: "AKIAIOSFODNN7EXAMPLE", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-    image: treeverse/lakefs:latest
+    image: treeverse/lakefs:0.47.0
     container_name: lakefs-setup
     networks:
       - lakefs-network
@@ -36,7 +36,7 @@ services:
         window: 5s
 
   lakefs:
-    image: treeverse/lakefs:latest
+    image: treeverse/lakefs:0.47.0
     container_name: lakefs
     networks:
       - lakefs-network
