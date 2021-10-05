@@ -10,6 +10,10 @@ The experiment is a change in methodology and obtaining final results based on t
  - Open the project in IntelliJ IDEA or something similar.
  - Setup SDK for Java and Scala.
  - Import jobs directory as SBT module.
+ - Generate jar file
+ ```bash
+    cd ./jobs/ && sbt assembly
+   ```
  - Go to ./service/zeppelin and execute:
    ```bash
     docker build . -t zeppelin-spark-3
